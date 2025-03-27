@@ -106,7 +106,7 @@ export const softDelete = async (req,res,next) => {
 export const restorePost = async (req, res, next) => {
     const { postId } = req.params;
 
-   let filter = { _id: postId, isDeleted: true };
+    let filter = { _id: postId, isDeleted: true };
 
     
     if (req.user.role !== roleTypes.admin) {
@@ -159,53 +159,26 @@ export const activePost = async (req,res,next) => {
         
     let posts
 
-    // console.log("User Data in activePost:", req.user);
+    let {page} =req.query
 
-    // if(req.user.role === roleTypes.admin){
-    //     posts = await DBservices.find({
-    //         model:postModel,
-    //         filter:{ isDeleted:false },
-    //         populate:[{path:"createdBy",select:"userName images -_id"}]
-    //     })
-    // }
-    // else{
-    //     posts = await DBservices.find({
-    //         model:postModel,
-    //         filter:{ isDeleted:false , createdBy:req.user._id},
-    //         populate:[{path:"createdBy", select:"userName images -_id"}]
-    //     })
-    // }
+    const limit = 4;
+    const skip = limit * (page - 1)
 
-    // posts = await DBservices.find({
-    //     model:postModel,
-    //     filter:{isDeleted:false},
-    //     populate:[{path:"createdBy",select:"userName image -_id"}]
-    // })
+    const results = await postModel.find({isDeleted:false}).limit(limit).skip(skip)
+
+    // const cursor = postModel.find({isDeleted:false}).cursor();
 
     // let results = [];
 
-    // for (const post of posts) {
-    //     const comment = await DBservices.find({
-    //         model:commentModel,
-    //         filter:{postId:post._id,isDeleted:false},
-    //         select:"text image -_id"
-    //     })
-    //     results.push({post,comment})
-    // }
-
-    const cursor = postModel.find({isDeleted:false}).cursor();
-
-    let results = [];
-
-    for (let post = await cursor.next(); post != null; post= await cursor.next()){
-            const comment = await DBservices.find({
-                    model:commentModel,
-                    filter:{postId:post._id,isDeleted:false},
-                    select:"text image -_id"
-                })
-                results.push({post,comment})
+    // for (let post = await cursor.next(); post != null; post= await cursor.next()){
+    //         const comment = await DBservices.find({
+    //                 model:commentModel,
+    //                 filter:{postId:post._id,isDeleted:false},
+    //                 select:"text image -_id"
+    //             })
+    //             results.push({post,comment})
             
-    }
+    // }
 
         return res.status(200).json({success:true, data:{ results }})
 
