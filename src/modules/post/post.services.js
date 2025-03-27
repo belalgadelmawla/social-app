@@ -159,12 +159,12 @@ export const activePost = async (req,res,next) => {
         
     let posts
 
-    let {page} =req.query
+    let {page} =req.query;
 
     const limit = 4;
     const skip = limit * (page - 1)
 
-    const results = await postModel.find({isDeleted:false}).limit(limit).skip(skip)
+    const results = await postModel.find({isDeleted:false}).paginate(page)
 
     // const cursor = postModel.find({isDeleted:false}).cursor();
 
