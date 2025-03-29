@@ -7,8 +7,12 @@ import postRouter from "./modules/post/post.controller.js";
 import globalErrorHandler from "./utils/errorHandling/globalErrorHandler.js";
 import notFoundHandler from "./utils/errorHandling/notFoundHandler.js";
 import cors from "cors";
+import { rateLimit } from "express-rate-limit";
 
-
+const limiter = rateLimit({
+    windowMs:5 * 60 * 1000,
+    limit: 2 , 
+});
 
 const bootstrap = async (app, express) => {
 
@@ -30,7 +34,9 @@ const bootstrap = async (app, express) => {
     //     return next()
     // })
 
+    app.use(limiter);
     app.use(express.json());
+
 
     app.use("/uploads", express.static("uploads"))
 
