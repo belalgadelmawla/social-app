@@ -8,10 +8,20 @@ import globalErrorHandler from "./utils/errorHandling/globalErrorHandler.js";
 import notFoundHandler from "./utils/errorHandling/notFoundHandler.js";
 import cors from "cors";
 import { rateLimit } from "express-rate-limit";
+import helmet from "helmet";
 
 const limiter = rateLimit({
     windowMs:5 * 60 * 1000,
-    limit: 2 , 
+    limit: 4 , 
+    message:"Too many requests from this IP, please try again later.",
+    statusCode:429,
+
+    handler:(req,res,next,options) => {
+        return next(new Error(options.message,{cause:options.statusCode}))
+    },
+    legacyHeaders:true,
+    standardHeaders:true,
+
 });
 
 const bootstrap = async (app, express) => {
@@ -34,8 +44,11 @@ const bootstrap = async (app, express) => {
     //     return next()
     // })
 
-    app.use(limiter);
     app.use(express.json());
+    
+    app.use(limiter);
+
+    app.use(helmet())
 
 
     app.use("/uploads", express.static("uploads"))
