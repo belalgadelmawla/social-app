@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLID, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from "graphql";
+import { GraphQLBoolean, GraphQLEnumType, GraphQLID, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from "graphql";
 import * as postServices from "./post.query.services.js"
 
 export const query = {
@@ -23,7 +23,34 @@ export const query = {
                                     }
                                 }))
                             },
-                            createdBy:{type:GraphQLID},
+                            createdBy:{type:new GraphQLObjectType({
+                                name:"userWhoCreatePost",
+                                fields:{
+                                    _id:{type:GraphQLID},
+                                    userName:{type:GraphQLString},
+                                    email:{type:GraphQLString},
+                                    password:{type:GraphQLString},
+                                    phone:{type:GraphQLString},
+                                    gender:{type: new GraphQLEnumType({
+                                        name:"gender",
+                                        values:{
+                                            male:{type:GraphQLString},
+                                            female:{type:GraphQLString},
+                                        }
+                                    })},
+                                    confirmEmail:{type:GraphQLBoolean},
+                                    isDeleted:{type:GraphQLBoolean},
+                                    viewers:{type:new GraphQLList(new GraphQLObjectType({
+                                        name:"viewers",
+                                        fields:{
+                                            userId:{type:GraphQLID},
+                                            time:{type:GraphQLString},
+                                            count:{type:GraphQLInt}
+                                        }
+                                    }))}
+
+                                }
+                            })},
                             deletedBy:{type:GraphQLID},
                             likes:{
                                 type:new GraphQLList(GraphQLID)},
