@@ -1,4 +1,4 @@
-import { GraphQLID, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from "graphql";
+import { GraphQLBoolean, GraphQLID, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from "graphql";
 import * as postServices from "./post.query.services.js"
 
 export const query = {
@@ -22,7 +22,12 @@ export const query = {
                                         public_id:{type:GraphQLString}
                                     }
                                 }))
-                            }
+                            },
+                            createdBy:{type:GraphQLID},
+                            deletedBy:{type:GraphQLID},
+                            likes:{
+                                type:new GraphQLList(GraphQLID)},
+                            isDeleted:{type:GraphQLBoolean}
                         }
                     }))
                 }
