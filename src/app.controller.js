@@ -7,54 +7,45 @@ import postRouter from "./modules/post/post.controller.js";
 import globalErrorHandler from "./utils/errorHandling/globalErrorHandler.js";
 import notFoundHandler from "./utils/errorHandling/notFoundHandler.js";
 import cors from "cors";
+import { createHandler } from "graphql-http/lib/use/express";
+import { schema } from "./modules/app.graph.js";
 import { rateLimit } from "express-rate-limit";
 import helmet from "helmet";
 
-const limiter = rateLimit({
-    windowMs:5 * 60 * 1000,
-    limit: 4 , 
-    message:"Too many requests from this IP, please try again later.",
-    statusCode:429,
+// const limiter = rateLimit({
+//     windowMs:5 * 60 * 1000,
+//     limit: 4 , 
+//     message:"Too many requests from this IP, please try again later.",
+//     statusCode:429,
 
-    handler:(req,res,next,options) => {
-        return next(new Error(options.message,{cause:options.statusCode}))
-    },
-    legacyHeaders:true,
-    standardHeaders:true,
+//     handler:(req,res,next,options) => {
+//         return next(new Error(options.message,{cause:options.statusCode}))
+//     },
+//     legacyHeaders:true,
+//     standardHeaders:true,
 
-});
+// });
 
 const bootstrap = async (app, express) => {
 
     await coonectionDB();
 
+    app.use('/graphql', createHandler({ schema }));
+
     app.use(cors());
 
-    // const whiteList = ["http://localhost:3000","http://localhost:4200","http://localhost:5200"];
-
-    // app.use((req,res,next)=> {
-    //     if(!whiteList.includes(req.header("origin"))) {
-    //         return next(new Error("blocked by cors",{cause:404}))
-    //     }
-
-    //     res.header("Access-Control-Allow-origin",req.header("origin"));
-    //     res.header("Access-Control-Allow-Methods","*");
-    //     res.header("Access-Control-Private-Network",true);
-
-    //     return next()
-    // })
 
     app.use(express.json());
-    
-    app.use(limiter);
 
-    app.use(helmet())
+    // app.use(limiter);
+
+    // app.use(helmet())
 
 
     app.use("/uploads", express.static("uploads"))
 
-    
-    app.get("/",(req,res)=> res.send("hello world"))
+
+    app.get("/", (req, res) => res.send("hello world"))
 
     app.use("/auth", authRouter)
     app.use("/user", userRouter)
