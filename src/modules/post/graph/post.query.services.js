@@ -5,7 +5,7 @@ export const getAllPosts = async (parent,args) => {
     const posts = await dbServices.find({
         model:postModel,
         filter:{isDeleted:false},
-        populate:[{path:"createdBy"}]
+        // populate:[{path:"createdBy"}]
     })
 
     return {message:"done",statusCode:200, data:posts}
