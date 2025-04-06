@@ -32,3 +32,8 @@ export const getSinglePostSchema = joi.object( {
 export const like_unlikePostSchema = joi.object( {
     postId:generalFeild.id.required(),
 })
+
+export const likePostGraph = joi.object( {
+    postId:generalFeild.id.required(),
+    authorization:joi.string().required()
+}).required()
