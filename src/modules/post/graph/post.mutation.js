@@ -15,5 +15,5 @@ export const likePost = async (parent,args)=> {
         options:{new:true}
     })
 
-    return {message:"done", statusCode:200 , data: {post}}
+    return {message:"done", statusCode:200 , data: post}
 }

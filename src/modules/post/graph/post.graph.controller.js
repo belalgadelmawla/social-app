@@ -75,25 +75,44 @@ export const mutation = {
             fields:{
                 message:{type:GraphQLString},
                 statusCode:{type:GraphQLInt},
-                data:{
-                    type:new GraphQLList(new GraphQLObjectType({
-                        name:"allPostsLikes",
-                        fields:{
-                            content:{type:GraphQLString},
-                            images:{
-                                type:new GraphQLList(new GraphQLObjectType({
-                                    name:"allImage",
-                                    fields:{
-                                        secure_url:{type:GraphQLString},
-                                        public_id:{type:GraphQLString}
-                                    }
-                                }))
-                            },
-                            likes:{
-                                type:new GraphQLList(GraphQLID)},
-                        }
-                    }))
+                // data:{
+                //     type:new GraphQLList(new GraphQLObjectType({
+                //         name:"allPostsLikes",
+                //         fields:{
+                //             content:{type:GraphQLString},
+                //             images:{
+                //                 type:new GraphQLList(new GraphQLObjectType({
+                //                     name:"allImage",
+                //                     fields:{
+                //                         secure_url:{type:GraphQLString},
+                //                         public_id:{type:GraphQLString}
+                //                     }
+                //                 }))
+                //             },
+                //             likes:{
+                //                 type:new GraphQLList(GraphQLID)},
+                //         }
+                //     }))
+                // }
+                data: {
+                    type: new GraphQLObjectType({
+                        name: "SinglePostLike",
+                        fields: {
+                        content: { type: GraphQLString },
+                        images: {
+                            type: new GraphQLList(new GraphQLObjectType({
+                            name: "SingleImage",
+                            fields: {
+                                secure_url: { type: GraphQLString },
+                                public_id: { type: GraphQLString }
+                            }
+                        }))
+                        },
+                        likes: { type: new GraphQLList(GraphQLID) }
+                    }
+                    })
                 }
+                
             }
         }),
         args:{
