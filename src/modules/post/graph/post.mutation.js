@@ -8,9 +8,9 @@ export const likePost = async (parent,args)=> {
 
     const user = await authentecation({authorization,accessRole:roleTypes.user})
 
-    const post = await dbservice.findOneAndUpdate({
+    const post = await dbservice.findByIdAndUpdate({
         model:postModel,
-        filter:{_id:postId},
+        id:{_id:postId},
         data:{$addToSet:{likes: user._id }},
         options:{new:true}
     })
