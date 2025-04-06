@@ -1,5 +1,7 @@
-import { GraphQLBoolean, GraphQLEnumType, GraphQLID, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from "graphql";
+import { GraphQLBoolean, GraphQLEnumType, GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema, GraphQLString } from "graphql";
 import * as postServices from "./post.query.services.js"
+import * as postService from "./post.mutation.js"
+import { userModel } from "../../../DB/models/user.model.js";
 
 export const query = {
     getAllPosts: {
@@ -23,7 +25,8 @@ export const query = {
                                     }
                                 }))
                             },
-                            createdBy:{type:new GraphQLObjectType({
+                            createdBy:{
+                                type:new GraphQLObjectType({
                                 name:"userWhoCreatePost",
                                 fields:{
                                     _id:{type:GraphQLID},
@@ -50,7 +53,8 @@ export const query = {
                                     }))}
 
                                 }
-                            })},
+                            }),
+                        },
                             deletedBy:{type:GraphQLID},
                             likes:{
                                 type:new GraphQLList(GraphQLID)},
@@ -66,9 +70,36 @@ export const query = {
 
 export const mutation = {
     likePost: {
-        type: GraphQLString,
-        resolve: () => {
-            console.log("welcome to social app ");
-        }
+        type:  new GraphQLObjectType({
+            name:"likepost",
+            fields:{
+                message:{type:GraphQLString},
+                statusCode:{type:GraphQLInt},
+                data:{
+                    type:new GraphQLList(new GraphQLObjectType({
+                        name:"allPostsLikes",
+                        fields:{
+                            content:{type:GraphQLString},
+                            images:{
+                                type:new GraphQLList(new GraphQLObjectType({
+                                    name:"allImage",
+                                    fields:{
+                                        secure_url:{type:GraphQLString},
+                                        public_id:{type:GraphQLString}
+                                    }
+                                }))
+                            },
+                            likes:{
+                                type:new GraphQLList(GraphQLID)},
+                        }
+                    }))
+                }
+            }
+        }),
+        args:{
+            postId:{type:new GraphQLNonNull(GraphQLID)},
+            authorization:{type:new GraphQLNonNull(GraphQLString)}
+        },
+        resolve: postService.likePost
     }
 }
