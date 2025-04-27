@@ -1,10 +1,12 @@
 import express from 'express';
 import bootstrap from './src/app.controller.js';
-import dotenv from "dotenv";
 import path from "path";
+import dotenv from "dotenv";
 
 
-dotenv.config({path: path.join("./src/config/.env")})
+path.join(process.cwd(), "src", "config", ".env")
+
+// dotenv.config({path: path.join("./src/config/.env")})
 
 
 const app = express();
