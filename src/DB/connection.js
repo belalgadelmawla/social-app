@@ -16,3 +16,4 @@ const connnctDB = async ()=> {
 }
 
 export default connnctDB;
+

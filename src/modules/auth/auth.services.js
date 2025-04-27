@@ -26,7 +26,7 @@ export const register = async (req,res,next) => {
         phone:encryptedPhone
     }})
 
-    emailEmitter.emit("sendEmail",user.email,user.userName)
+    emailEmitter.emit("sendEmail",user.email,user.userName,user._id)
 
     return res.status(200).json({success:true, message: "done",results: user })
 

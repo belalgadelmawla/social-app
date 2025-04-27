@@ -1,5 +1,4 @@
 import nodemailer from 'nodemailer';
-import { register } from '../../modules/auth/auth.services.js';
 
 const sendEmail = async ({to ,subject,html}) => {
 
@@ -11,9 +10,9 @@ const sendEmail = async ({to ,subject,html}) => {
             user:process.env.EMAIL,
             pass:process.env.PASS,
         },
-        tls : {
-            rejectUnauthorized : false
-        }
+    //     tls : {
+    //         rejectUnauthorized : false
+    //   }
     })
     const info = await transporter.sendMail({
         from:`"Social Media Application" <${process.env.EMAIL}>`,
