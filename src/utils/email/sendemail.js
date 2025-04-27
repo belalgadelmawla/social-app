@@ -21,9 +21,9 @@ const sendEmail = async ({to ,subject,html}) => {
         subject,
         html,
     })
-
+    console.log(info)
     return info.rejected.length === 0 ? true : false;
-console.log(info)
+
 }
 
 export const subject = {
