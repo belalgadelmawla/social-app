@@ -11,9 +11,9 @@ const sendEmail = async ({to ,subject,html}) => {
             user:process.env.EMAIL,
             pass:process.env.PASS,
         },
-    //     tls : {
-    //         rejectUnauthorized : false
-    //   }
+        tls : {
+            rejectUnauthorized : false
+      }
     })
     const info = await transporter.sendMail({
         from:`"Social Media Application" <${process.env.EMAIL}>`,
@@ -23,7 +23,7 @@ const sendEmail = async ({to ,subject,html}) => {
     })
 
     return info.rejected.length === 0 ? true : false;
-
+console.log(info)
 }
 
 export const subject = {
