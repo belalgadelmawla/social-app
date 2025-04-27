@@ -15,7 +15,7 @@ async function testSend() {
 
   const info = await transporter.sendMail({
     from: `"Test Sender" <${process.env.EMAIL}>`,
-    to: "ايميلك انت@gmail.com",
+    to: "belalmahmoudzaki@gmail.com",
     subject: "Hello from Nodemailer",
     text: "This is a test email!"
   });
