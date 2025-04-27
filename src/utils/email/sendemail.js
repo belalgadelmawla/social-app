@@ -3,10 +3,9 @@ import nodemailer from 'nodemailer';
 const sendEmail = async ({to ,subject,html}) => {
 
     const transporter = nodemailer.createTransport( {
-        // host: "smtp.gmail.com",
-        // port:465,
-        // secure:true,
-        service:'gmail',
+        host: "smtp.gmail.com",
+        port:465,
+        secure:true,
         auth: {
             user:process.env.EMAIL,
             pass:process.env.PASS,
@@ -21,7 +20,7 @@ const sendEmail = async ({to ,subject,html}) => {
         subject,
         html,
     })
-    console.log(info)
+
     return info.rejected.length === 0 ? true : false;
 
 }
