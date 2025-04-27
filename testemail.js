@@ -11,6 +11,9 @@ async function testSend() {
       user: process.env.EMAIL,
       pass: process.env.PASS,
     },
+    tls: {
+        rejectUnauthorized: false
+      }
   });
 
   const info = await transporter.sendMail({
